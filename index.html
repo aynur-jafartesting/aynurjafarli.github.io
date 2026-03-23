@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aynur Jafarli — QA Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --surface: #13161e;
+      --surface2: #1a1e29;
+      --border: #252a38;
+      --accent: #00d9a3;
+      --accent2: #5b8fff;
+      --accent3: #ff6b6b;
+      --text: #e8eaf0;
+      --muted: #6b7280;
+      --mono: 'Space Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* GRID NOISE BACKGROUND */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,217,163,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,217,163,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ========== NAV ========== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 48px;
+      backdrop-filter: blur(16px);
+      background: rgba(13,15,20,0.8);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ========== HERO ========== */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 48px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-inner {
+      max-width: 760px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      display: inline-block;
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    h1 {
+      font-family: var(--mono);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    h1 .name-accent { color: var(--accent); }
+
+    .hero-title {
+      font-family: var(--mono);
+      font-size: clamp(14px, 2vw, 18px);
+      color: var(--muted);
+      margin-bottom: 28px;
+      font-weight: 400;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: #9ca3af;
+      max-width: 580px;
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+    }
+
+    .btn-primary:hover { background: #00f5b8; transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--accent2);
+      border: 1px solid var(--accent2);
+    }
+
+    .btn-outline:hover { background: rgba(91,143,255,0.1); transform: translateY(-1px); }
+
+    /* Floating stats */
+    .hero-stats {
+      position: absolute;
+      right: 48px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      text-align: center;
+      min-width: 140px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+
+    .stat-card:nth-child(1)::before { background: var(--accent); }
+    .stat-card:nth-child(2)::before { background: var(--accent2); }
+    .stat-card:nth-child(3)::before { background: var(--accent3); }
+
+    .stat-num {
+      font-family: var(--mono);
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-card:nth-child(1) .stat-num { color: var(--accent); }
+    .stat-card:nth-child(2) .stat-num { color: var(--accent2); }
+    .stat-card:nth-child(3) .stat-num { color: var(--accent3); }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ========== SECTIONS ========== */
+    .section {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 48px;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-family: var(--mono);
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 700;
+      margin-bottom: 48px;
+      line-height: 1.2;
+    }
+
+    /* ========== SKILLS ========== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .skill-group {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .skill-group:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .skill-group-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .skill-group-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+    }
+
+    .tag-green { background: rgba(0,217,163,0.1); color: var(--accent); border: 1px solid rgba(0,217,163,0.2); }
+    .tag-blue { background: rgba(91,143,255,0.1); color: var(--accent2); border: 1px solid rgba(91,143,255,0.2); }
+    .tag-red { background: rgba(255,107,107,0.1); color: var(--accent3); border: 1px solid rgba(255,107,107,0.2); }
+    .tag-gray { background: rgba(107,114,128,0.1); color: var(--muted); border: 1px solid rgba(107,114,128,0.2); }
+
+    /* ========== EXPERIENCE ========== */
+    .timeline {
+      position: relative;
+      padding-left: 32px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 8px; bottom: 8px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 48px;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -36px;
+      top: 8px;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    .timeline-item:nth-child(2)::before { background: var(--accent2); box-shadow: 0 0 0 2px var(--accent2); }
+    .timeline-item:nth-child(3)::before { background: var(--accent3); box-shadow: 0 0 0 2px var(--accent3); }
+    .timeline-item:nth-child(4)::before { background: var(--muted); box-shadow: 0 0 0 2px var(--muted); }
+
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .job-company {
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .job-period {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .job-role {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+    }
+
+    .job-desc {
+      color: #9ca3af;
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .job-achievements {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .achievement {
+      display: flex;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .achievement::before {
+      content: '▸';
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ========== PROJECTS ========== */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .project-card:hover {
+      border-color: rgba(0,217,163,0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    }
+
+    .project-card:hover::after { transform: scaleX(1); }
+
+    .project-icon {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    .project-title {
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .project-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    /* ========== CERTIFICATIONS ========== */
+    .certs-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .cert-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+
+    .cert-item:hover { border-color: var(--accent2); }
+
+    .cert-icon {
+      width: 36px; height: 36px;
+      background: rgba(91,143,255,0.1);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .cert-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .cert-meta {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ========== CONTACT ========== */
+    .contact-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contact-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .contact-text h2 { margin-bottom: 12px; }
+    .contact-text p { color: var(--muted); font-size: 15px; max-width: 420px; }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .contact-link:hover { color: var(--accent); }
+
+    .contact-link-icon {
+      width: 32px; height: 32px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 32px 48px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* ========== DIVIDER ========== */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 0 48px;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 24px 60px; flex-direction: column; }
+      .hero-stats { position: static; transform: none; flex-direction: row; flex-wrap: wrap; margin-top: 40px; }
+      .section { padding: 60px 24px; }
+      .contact-inner { padding: 60px 24px; flex-direction: column; }
+    }
+
+    /* Fade-in animation */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-inner > * {
+      animation: fadeUp 0.6s ease forwards;
+      opacity: 0;
+    }
+
+    .hero-badge { animation-delay: 0.1s; }
+    h1 { animation-delay: 0.2s; }
+    .hero-title { animation-delay: 0.3s; }
+    .hero-desc { animation-delay: 0.4s; }
+    .hero-actions { animation-delay: 0.5s; }
+
+    .hero-stats .stat-card:nth-child(1) { animation: fadeUp 0.5s 0.4s ease forwards; opacity: 0; }
+    .hero-stats .stat-card:nth-child(2) { animation: fadeUp 0.5s 0.55s ease forwards; opacity: 0; }
+    .hero-stats .stat-card:nth-child(3) { animation: fadeUp 0.5s 0.7s ease forwards; opacity: 0; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">aynur.jafarli<span style="color:var(--muted)">@qa</span></div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certs">Certifications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Available for opportunities</div>
+    <h1><span class="name-accent">Aynur</span><br>Jafarli</h1>
+    <p class="hero-title">// Junior QA Engineer · Baku, Azerbaijan</p>
+    <p class="hero-desc">
+      Manual &amp; automation testing specialist with 1+ year of hands-on experience across web and mobile platforms.
+      Passionate about quality, detail-oriented testing, and continuously levelling up with Java &amp; Selenium automation.
+    </p>
+    <div class="hero-actions">
+      <a href="mailto:aynura.jafar@gmail.com" class="btn btn-primary">✉ Get in Touch</a>
+      <a href="https://linkedin.com/in/aynur-jafarli-a560a8140" target="_blank" class="btn btn-outline">↗ LinkedIn</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="stat-num">200+</div>
+      <div class="stat-label">Test Cases<br>Executed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">100+</div>
+      <div class="stat-label">Defects<br>Reported</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Companies<br>Worked At</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section class="section" id="skills">
+  <div class="section-label">// 01 — Technical Skills</div>
+  <h2>What I Work With</h2>
+
+  <div class="skills-grid">
+    <div class="skill-group">
+      <div class="skill-group-title">Testing</div>
+      <div class="skill-tags">
+        <span class="tag tag-green">Manual Testing</span>
+        <span class="tag tag-green">Functional Testing</span>
+        <span class="tag tag-green">Regression Testing</span>
+        <span class="tag tag-green">Smoke Testing</span>
+        <span class="tag tag-green">UI Testing</span>
+        <span class="tag tag-green">Exploratory Testing</span>
+        <span class="tag tag-green">Mobile App Testing</span>
+        <span class="tag tag-green">Web App Testing</span>
+        <span class="tag tag-green">Localization Testing</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-title">Tools & API</div>
+      <div class="skill-tags">
+        <span class="tag tag-blue">Jira</span>
+        <span class="tag tag-blue">Postman</span>
+        <span class="tag tag-blue">REST API</span>
+        <span class="tag tag-blue">SQL</span>
+        <span class="tag tag-blue">Git / GitHub</span>
+        <span class="tag tag-blue">Agile / Scrum</span>
+        <span class="tag tag-blue">STLC</span>
+        <span class="tag tag-blue">Test Documentation</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-title">Automation (Learning)</div>
+      <div class="skill-tags">
+        <span class="tag tag-red">Java</span>
+        <span class="tag tag-red">Selenium WebDriver</span>
+        <span class="tag tag-red">TestNG</span>
+        <span class="tag tag-red">Maven</span>
+        <span class="tag tag-red">Jenkins</span>
+        <span class="tag tag-red">OOP</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-title">Other</div>
+      <div class="skill-tags">
+        <span class="tag tag-gray">HTML5</span>
+        <span class="tag tag-gray">CSS3</span>
+        <span class="tag tag-gray">Azerbaijani (Native)</span>
+        <span class="tag tag-gray">English (Professional)</span>
+        <span class="tag tag-gray">Turkish (Professional)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section class="section" id="experience">
+  <div class="section-label">// 02 — Work History</div>
+  <h2>Experience</h2>
+
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="job-header">
+        <span class="job-company">uTest</span>
+        <span class="job-period">Feb 2026 – Present</span>
+      </div>
+      <div class="job-role">Junior QA Engineer · Freelance / Remote</div>
+      <p class="job-desc">Participating in multilingual testing projects across different platforms, evaluating language accuracy and performing functional/exploratory testing on global products.</p>
+      <div class="job-achievements">
+        <div class="achievement">Executed 40+ multilingual test scenarios validating language accuracy, UI text consistency, and functional workflows</div>
+        <div class="achievement">Reported 20+ localization and functional defects with clear reproduction steps, screenshots, and environment details</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="job-header">
+        <span class="job-company">Smart Solutions Group</span>
+        <span class="job-period">Nov 2025 – Feb 2026</span>
+      </div>
+      <div class="job-role">Junior QA Engineer · Baku, Azerbaijan</div>
+      <p class="job-desc">Led testing efforts for the procure.az tender platform — covering functional, regression, smoke testing, API validation, and bug tracking via Jira.</p>
+      <div class="job-achievements">
+        <div class="achievement">Executed 100+ test cases across critical workflows including tender creation, user registration, document submission</div>
+        <div class="achievement">Documented 35+ defects in Jira, improving application stability before production release</div>
+        <div class="achievement">Applied REST API testing and SQL queries for backend data validation</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="job-header">
+        <span class="job-company">TestTeamNow</span>
+        <span class="job-period">Jun 2025 – Nov 2025</span>
+      </div>
+      <div class="job-role">Junior QA Engineer · Remote</div>
+      <p class="job-desc">Designed and executed structured test cases for web and mobile applications, performing API testing and collaborating with dev teams on bug resolution.</p>
+      <div class="job-achievements">
+        <div class="achievement">Executed 60+ test cases across critical workflows of web and mobile applications</div>
+        <div class="achievement">Identified and documented 45+ defects, contributing to improved application stability</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="job-header">
+        <span class="job-company">Arash Medical Company</span>
+        <span class="job-period">Jan 2020 – Apr 2025</span>
+      </div>
+      <div class="job-role">Laboratory Applications Engineer · Baku, Azerbaijan</div>
+      <p class="job-desc">Supported and tested laboratory software applications, building strong validation, analytical, and troubleshooting skills that translated directly into QA expertise.</p>
+      <div class="job-achievements">
+        <div class="achievement">Detected and escalated 50+ software inconsistencies, minimizing laboratory downtime</div>
+        <div class="achievement">Enhanced collaboration between lab staff and technical teams for smoother application updates</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section class="section" id="projects">
+  <div class="section-label">// 03 — Portfolio Projects</div>
+  <h2>Testing Projects</h2>
+
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-icon">🏛️</div>
+      <div class="project-title">procure.az — Tender Platform QA</div>
+      <p class="project-desc">End-to-end manual testing of a government tender platform. Covered critical user workflows: tender creation, user registration, and document submission. Tracked all defects in Jira with detailed reproduction steps.</p>
+      <div class="project-tech">
+        <span class="tag tag-green">Manual Testing</span>
+        <span class="tag tag-blue">Jira</span>
+        <span class="tag tag-blue">REST API</span>
+        <span class="tag tag-blue">SQL</span>
+        <span class="tag tag-green">Regression</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">🌐</div>
+      <div class="project-title">Multilingual Testing — uTest Cycles</div>
+      <p class="project-desc">Participated in global crowdsourced testing cycles across multiple platforms. Validated language accuracy, grammatical correctness, and UI text consistency in multilingual interfaces for international products.</p>
+      <div class="project-tech">
+        <span class="tag tag-green">Localization Testing</span>
+        <span class="tag tag-green">Exploratory</span>
+        <span class="tag tag-gray">Azerbaijani</span>
+        <span class="tag tag-gray">English</span>
+        <span class="tag tag-gray">Turkish</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">📱</div>
+      <div class="project-title">Web & Mobile QA — TestTeamNow</div>
+      <p class="project-desc">Designed and executed structured test cases for both web and mobile applications. Applied API testing with Postman, validated backend data with SQL, and collaborated in Agile/Scrum sprints.</p>
+      <div class="project-tech">
+        <span class="tag tag-green">Mobile Testing</span>
+        <span class="tag tag-blue">Postman</span>
+        <span class="tag tag-blue">SQL</span>
+        <span class="tag tag-green">Smoke Testing</span>
+        <span class="tag tag-blue">Agile</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">🤖</div>
+      <div class="project-title">Selenium Automation — In Progress</div>
+      <p class="project-desc">Currently building automated test scripts using Java and Selenium WebDriver. Structuring a test framework with TestNG and Maven. Working towards CI/CD integration with Jenkins and version control via GitHub.</p>
+      <div class="project-tech">
+        <span class="tag tag-red">Java</span>
+        <span class="tag tag-red">Selenium</span>
+        <span class="tag tag-red">TestNG</span>
+        <span class="tag tag-red">Maven</span>
+        <span class="tag tag-red">Jenkins</span>
+        <span class="tag tag-blue">GitHub</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CERTIFICATIONS -->
+<section class="section" id="certs">
+  <div class="section-label">// 04 — Education & Certifications</div>
+  <h2>Learning Path</h2>
+
+  <div class="certs-list">
+    <div class="cert-item">
+      <div class="cert-icon">🎓</div>
+      <div>
+        <div class="cert-name">Biomedical Technology Engineering — B.Sc.</div>
+        <div class="cert-meta">Azerbaijan Technical University · 2013–2017</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">⚡</div>
+      <div>
+        <div class="cert-name">QA Automation: Selenium WebDriver with Java</div>
+        <div class="cert-meta">Test Automation University · March 2026</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">📚</div>
+      <div>
+        <div class="cert-name">Java + Selenium — Manual & Automation (Ongoing)</div>
+        <div class="cert-meta">Udemy · March 2026 – Present</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">🎨</div>
+      <div>
+        <div class="cert-name">HTML & CSS Front-End Practical Course</div>
+        <div class="cert-meta">Udemy · February 2026</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">🔍</div>
+      <div>
+        <div class="cert-name">Introduction to Manual Testing</div>
+        <div class="cert-meta">Great Learning · August 2025</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">🏫</div>
+      <div>
+        <div class="cert-name">QA Manual Course</div>
+        <div class="cert-meta">Alas Academy · February – June 2025</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="contact-text">
+      <div class="section-label">// 05 — Contact</div>
+      <h2>Let's Work Together</h2>
+      <p>Open to Junior QA roles, freelance testing projects, and collaboration opportunities. Let's build quality software together.</p>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:aynura.jafar@gmail.com" class="contact-link">
+        <div class="contact-link-icon">✉</div>
+        aynura.jafar@gmail.com
+      </a>
+      <a href="tel:+994516968205" class="contact-link">
+        <div class="contact-link-icon">📞</div>
+        +994 (51) 696-82-05
+      </a>
+      <a href="https://linkedin.com/in/aynur-jafarli-a560a8140" target="_blank" class="contact-link">
+        <div class="contact-link-icon">in</div>
+        linkedin.com/in/aynur-jafarli
+      </a>
+      <a href="https://github.com" target="_blank" class="contact-link">
+        <div class="contact-link-icon">⌥</div>
+        github.com/aynurjafarli
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Aynur Jafarli — Built with precision, tested with care.</p>
+</footer>
+
+</body>
+</html>
